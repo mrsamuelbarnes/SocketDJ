@@ -1,0 +1,61 @@
+/* General use styles */
+.center-screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.full-width {
+  width: 100%;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.float-left {
+	float: left;
+}
+
+.float-right {
+	float: right;
+}
+
+/* App display styles */
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+#loading-overlay {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 777;
+}
+
+/* Notification styles */
+#notification-overlay {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100px;
+  padding: 50px;
+  z-index: 7777;
+}
+
+.notification {
+  margin-top: 25px;
+  max-width: 350px;
+  margin: auto;
+}
+
+/* Search styles */
+.search-result {
+}
+
+.search-result-thumbnail {
+	width: 100%;
+}

@@ -1,0 +1,91 @@
+<div class="container-fluid">
+
+	<div class="row">
+		<div class="col-xs-12">
+			<span class="float-left">Population <span class="population"></span></span>
+			<span class="float-right">Room <span class="roomId"></span></span>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="align-center full-width">Now playing: <span id="currentTrack"></span></div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<div id="player"></div>
+			<script>
+
+				// Load the YouTube iframe api and add it to the page
+				var tag = document.createElement('script');
+				tag.src = "https://www.youtube.com/iframe_api";
+				var firstScriptTag = document.getElementsByTagName('script')[0];
+				firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+				// Create the player once the api has loaded
+				var player;
+				function onYouTubeIframeAPIReady() {
+					player = new YT.Player('player', {
+						width: '100%',
+						events: {
+							'onReady': onPlayerReady,
+      				'onStateChange': onPlayerStateChange
+						}
+					});
+				}
+
+				// Event when the player is ready
+				function onPlayerReady(event) {
+
+					// Max the volume
+					event.target.setVolume(100);
+				}
+
+				// Event when the player's state changes
+				function onPlayerStateChange(event) {
+
+					// Check which event occured
+					switch(event.data){
+						case 0:
+
+							// The video has ended, queue the next
+					    requestNextTrack();
+
+			        break;
+						case 1:
+
+							// The video has begun playing, update the now playing
+							var videoTitle = player.getVideoData().title
+					    $('#currentTrack').html(videoTitle);
+
+							// Get the room and update the currently playing title
+					    socket.emit('mapToRoom', $('.roomId').text(), { '#currentTrack': videoTitle });
+
+							// Update the voting table for the room
+					    var roomId = $('.roomId').text()
+					    socket.emit('updateVotes', roomId);
+							
+			        break;
+						case 5:
+
+							// A new video was queued, play the video
+							player.playVideo();
+
+			        break;
+				    default:
+			        // Handle non-specific event
+					}
+				}
+
+			</script>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<div id="votes-display"></div>
+		</div>
+	</div>
+</div>
